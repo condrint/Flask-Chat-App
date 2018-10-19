@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { io } from 'socketio';
+import { io } from 'socket.io';
 /*   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
         <script type="text/javascript">
@@ -16,7 +16,7 @@ import { io } from 'socketio';
             } )
           } )
           socket.on( 'my response', function( msg ) {
-            console.log( msg )
+            console.log( msg ) 
             if( typeof msg.user_name !== 'undefined' ) {
               $( 'h3' ).remove()
               $( 'div.message_holder' ).append( '<div><b style="color: #000">'+msg.user_name+'</b> '+msg.message+'</div>' )
@@ -25,8 +25,9 @@ import { io } from 'socketio';
         </script>*/
 class App extends Component {
   constructor(){
+    super()
     //connect the socket to the backend
-    var socket = io.connect(`http://${document.domain}:3000`);
+    const socket = io(`http://${document.domain}:3000`);
     socket.on( 'connect', function() {
       //emit to socket listening for 'my event' 
       console.log('i logged on')
