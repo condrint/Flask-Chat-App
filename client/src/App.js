@@ -1,71 +1,78 @@
 import React, { Component } from 'react';
-import { io } from 'socket.io';
-/*   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
-        <script type="text/javascript">
+import { Messages } from './Messages';
+import io from 'socket.io-client/dist/socket.io';
+var socket = io(`http://${document.domain}:5000`);
 
-            var form = $( 'form' ).on( 'submit', function( e ) {
-              e.preventDefault()
-              let user_name = $( 'input.username' ).val()
-              let user_input = $( 'input.message' ).val()
-              socket.emit( 'my event', {
-                user_name : user_name,
-                message : user_input
-              } )
-              $( 'input.message' ).val( '' ).focus()
-            } )
-          } )
-          socket.on( 'my response', function( msg ) {
-            console.log( msg ) 
-            if( typeof msg.user_name !== 'undefined' ) {
-              $( 'h3' ).remove()
-              $( 'div.message_holder' ).append( '<div><b style="color: #000">'+msg.user_name+'</b> '+msg.message+'</div>' )
-            }
-          })
-        </script>*/
+
+
 class App extends Component {
   constructor(){
     super()
-    //connect the socket to the backend
-    const socket = io(`http://${document.domain}:3000`);
+    this.state ={
+      messages: [['asdf', 'asdfd']],
+      alias: '',
+      message: '',
+    }
+
+    this.handleMessageSubmit = this.handleMessageSubmit.bind(this);
+    this.handleAliasChange = this.handleAliasChange.bind(this);
+    this.handleMessageChange = this.handleMessageChange.bind(this);
+    this.updateMessages = this.updateMessages.bind(this);
+
     socket.on( 'connect', function() {
       //emit to socket listening for 'my event' 
-      console.log('i logged on')
-      socket.emit( 'my event', {
+      socket.emit( 'user connected', {
         data: 'User Connected'
       });
     });
 
-    this.handleMessageSubmit = this.handleMessageSubmit.bind(this);
+    socket.on( 'my response', (msg) => {
+      this.updateMessages(msg);
+    })
 
   }
 
+
+
+  updateMessages(message){
+    let currentMessages = this.state.messages;
+    currentMessages.push([message.user_name, message.message]);
+    this.setState({messages:currentMessages});
+  }
+  
   handleMessageSubmit(e){
     e.preventDefault()
-    let user_name = 'asdf';
-    let user_input = 'asdf';
-    this.socket.emit( 'my event', {
-      user_name : user_name,
-      message : user_input
-    } )
+    let user_name = this.state.alias;
+    let user_input = this.state.message;
+    socket.emit( 'my response', {
+      user_name : user_name.toString(),
+      message : user_input.toString()
+    });
+    this.setState({ message: '' }); //clear message for user after sending
   }
 
+  handleAliasChange(e){ this.setState({alias:e.target.value}); } //as user types, update state to reflect change
+  handleMessageChange(e){ this.setState({message:e.target.value}); } //as user types, update state to reflect change
 
 
   render() {
+    console.log(this.state.messages);
+    let messages = this.state.messages;
     return (
       <div className="App">
-        <form action="" method="POST" onSubmit={this.handleMessageSubmit}>
-          <input type="text" class="username" placeholder="User Name"/>
-          <input type="text" class="message" placeholder="Messages"/>
+        <form onSubmit={this.handleMessageSubmit}>
+          <input type="text" placeholder="Alias" value={this.state.alias} onChange={this.handleAliasChange}/>
+          <input type="text" placeholder="Message" value={this.state.message} onChange={this.handleMessageChange}/>
           <input type="submit"/> 
         </form>
-        <div class="message_holder"></div>
+        <Messages messages={messages}/>
       </div>
+      
     );
   }
 }
 
 export default App;
+
 
 

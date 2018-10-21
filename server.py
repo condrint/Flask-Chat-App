@@ -3,8 +3,8 @@ from flask_socketio import SocketIO
 import os, sys
 
 #initialize library variables
-app = Flask(__name__, static_folder='templates')
-#app.config['SECRET_KEY'] = 'vnkdjnfjknfl1232#'
+app = Flask(__name__, static_folder='client/build/static')
+app.config['SECRET_KEY'] = 'vnkdjnfjknfl1232#'
 socketio = SocketIO(app)
 
 
@@ -31,13 +31,19 @@ def messageReceived(methods=['GET', 'POST']):
     print('message was received!!!')
 
 
-@socketio.on('my event')
+@socketio.on('my response')
 def handle_my_custom_event(json, methods=['GET', 'POST']):
     print('received my event: ' + str(json))
+    print(json, file=sys.stdout)
     socketio.emit('my response', json, callback=messageReceived)
+
+@socketio.on('user connected')
+def handle_my_custom_event2(json, methods=['GET', 'POST']):
+    print('received my event: ' + str(json))
+    #socketio.emit('my response', json, callback=messageReceived)
 
 
 #entry point
 if __name__ == '__main__':
-    app.run()
+    #app.run()
     socketio.run(app)
