@@ -15,7 +15,7 @@ class App extends Component {
     
     //create state for component
     this.state ={
-      messages: [['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd']],
+      messages: [['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd']],
       alias: '',
       message: '',
     }
@@ -77,7 +77,7 @@ class App extends Component {
           <form id="chatInput" onSubmit={this.handleMessageSubmit}>
             <input type="text" placeholder="Alias" value={this.state.alias} onChange={this.handleAliasChange}/>
             <input type="text" placeholder="Message" value={this.state.message} onChange={this.handleMessageChange}/>
-            <input type="submit"/> 
+            <input type="submit" value="send"/> 
           </form>
         </div>
         <div id="messageWrapper">
