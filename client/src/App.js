@@ -15,7 +15,7 @@ class App extends Component {
     
     //create state for component
     this.state ={
-      messages: [['asdf', 'asdfd']],
+      messages: [['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd']],
       alias: '',
       message: '',
     }
@@ -73,12 +73,16 @@ class App extends Component {
     let messages = this.state.messages;
     return (
       <div className="App">
-        <form onSubmit={this.handleMessageSubmit}>
-          <input type="text" placeholder="Alias" value={this.state.alias} onChange={this.handleAliasChange}/>
-          <input type="text" placeholder="Message" value={this.state.message} onChange={this.handleMessageChange}/>
-          <input type="submit"/> 
-        </form>
-        <Messages messages={messages}/>
+        <div id="chatInputWrapper">
+          <form id="chatInput" onSubmit={this.handleMessageSubmit}>
+            <input type="text" placeholder="Alias" value={this.state.alias} onChange={this.handleAliasChange}/>
+            <input type="text" placeholder="Message" value={this.state.message} onChange={this.handleMessageChange}/>
+            <input type="submit"/> 
+          </form>
+        </div>
+        <div id="messageWrapper">
+          <Messages messages={messages}/> 
+        </div>
       </div>
       
     );
