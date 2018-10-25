@@ -18,10 +18,12 @@ class App extends Component {
       messages: [['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd']],
       alias: '',
       message: '',
+      isLoggedIn: false,
     }
 
     //bind functions to this object
     this.handleMessageSubmit = this.handleMessageSubmit.bind(this);
+    this.handleAliasSubmit = this.handleAliasSubmit.bind(this);
     this.handleAliasChange = this.handleAliasChange.bind(this);
     this.handleMessageChange = this.handleMessageChange.bind(this);
     this.updateMessages = this.updateMessages.bind(this);
@@ -63,6 +65,15 @@ class App extends Component {
     this.setState({ message: '' }); //clear message for user after sending
   }
 
+  handleAliasSubmit(e){
+    //extract data from html form and emit
+    //to socket code on backend
+    this.setState({
+      alias: e.target.value,
+      loggedIn: true
+    })
+  }
+
   //functions to keep react state consistent
   //with current input
   handleAliasChange(e){ this.setState({alias:e.target.value}); } //as user types, update state to reflect change
@@ -70,19 +81,31 @@ class App extends Component {
 
 
   render() {
+    let isLoggedIn = this.state.loggedIn;
     let messages = this.state.messages;
     return (
       <div className="App">
-        <div id="chatInputWrapper">
-          <form id="chatInput" onSubmit={this.handleMessageSubmit}>
-            <input type="text" placeholder="Alias" value={this.state.alias} onChange={this.handleAliasChange}/>
-            <input type="text" placeholder="Message" value={this.state.message} onChange={this.handleMessageChange}/>
-            <input type="submit" value="send"/> 
-          </form>
-        </div>
-        <div id="messageWrapper">
-          <Messages messages={messages}/> 
-        </div>
+        { isLoggedIn ? ( //isLoggedIn is true
+          <div>
+            <div id="chatInputWrapper">
+              <form id="chatInput" onSubmit={this.handleMessageSubmit}>
+                <input type="text" placeholder="Message" value={this.state.message} onChange={this.handleMessageChange}/>
+                <input type="submit" value="send"/> 
+              </form>
+            </div>
+            <div id="messageWrapper">
+              <Messages messages={messages}/> 
+            </div>
+          </div>
+          ):( //isLoggedIn is false
+            <div id="aliasInputWrapper">
+            <form id="chatInput" onSubmit={this.handleAliasSubmit}>
+                <input type="text" placeholder="Alias" value={this.state.alias} onChange={this.handleAliasChange}/>
+                <input type="submit" value="send"/> 
+              </form>
+            </div>
+          )}
+        
       </div>
       
     );
