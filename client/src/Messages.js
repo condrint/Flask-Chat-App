@@ -7,12 +7,10 @@ class Messages extends Component{
     }
 
     render(){
-        console.log(this.props.messages)
         return(
             <ul id="messageList">
                 { this.props.messages && //check that messages is not empty first
                     this.props.messages.map((item, index) => //generate a list HTML tag for each item where item consists of [user, message]
-                        
                         <li key={index}> 
                             {item[0].toString()} : {item[1].toString()} 
                         </li> 

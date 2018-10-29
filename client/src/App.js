@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Messages } from './Messages';
+import { Users } from './Users';
 import io from 'socket.io-client/dist/socket.io';
 
 //document domain corresponds to the url in the browser
@@ -15,10 +16,11 @@ class App extends Component {
     
     //create state for component
     this.state ={
-      messages: [['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd'],['asdf', 'asdfd']],
+      messages: [],
       alias: '',
       message: '',
       isLoggedIn: false,
+      users: [],
     }
 
     //bind functions to this object
@@ -27,18 +29,26 @@ class App extends Component {
     this.handleAliasChange = this.handleAliasChange.bind(this);
     this.handleMessageChange = this.handleMessageChange.bind(this);
     this.updateMessages = this.updateMessages.bind(this);
+    this.updateUsers = this.updateUsers.bind(this);
 
     //instantiate socket events
     socket.on('connect', function() {
       //emit to socket listening for a connection
+      /*
       socket.emit( 'user connected', {
         data: 'User Connected'
-      });
+      });*/
     });
 
     //received a new message
-    socket.on( 'my response', (msg) => {
+    socket.on('server message', (msg) => {
       this.updateMessages(msg);
+    })
+
+    socket.on('new user', (users) => {
+      console.log('new user')
+      console.log(users);
+      this.updateUsers(users);
     })
   }
 
@@ -48,19 +58,24 @@ class App extends Component {
     //update the messages in state to include
     //the message passed as a parameter
     let currentMessages = this.state.messages;
-    currentMessages.push([message.user_name, message.message]);
+    currentMessages.push([message.alias, message.message]);
     this.setState({messages:currentMessages});
   }
+
+  updateUsers(users){
+    this.setState({users:users.users});
+  }
+
   
   handleMessageSubmit(e){
     //extract data from html form and emit
     //to socket code on backend
     e.preventDefault()
-    let user_name = this.state.alias;
-    let user_input = this.state.message;
-    socket.emit( 'my response', {
-      user_name : user_name.toString(),
-      message : user_input.toString()
+    let alias = this.state.alias;
+    let message = this.state.message;
+    socket.emit( 'send message', {
+      alias : alias.toString(),
+      message : message.toString()
     });
     this.setState({ message: '' }); //clear message for user after sending
   }
@@ -68,8 +83,11 @@ class App extends Component {
   handleAliasSubmit(e){
     //extract data from html form and emit
     //to socket code on backend
+    let alias = this.state.alias
+    socket.emit( 'user login', {
+      alias : alias,
+    });
     this.setState({
-      alias: e.target.value,
       loggedIn: true
     })
   }
@@ -83,6 +101,7 @@ class App extends Component {
   render() {
     let isLoggedIn = this.state.loggedIn;
     let messages = this.state.messages;
+    let users = this.state.users;
     return (
       <div className="App">
         { isLoggedIn ? ( //isLoggedIn is true
@@ -95,6 +114,9 @@ class App extends Component {
             </div>
             <div id="messageWrapper">
               <Messages messages={messages}/> 
+            </div>
+            <div id="userWrapper">
+              <Users users={users}/>
             </div>
           </div>
           ):( //isLoggedIn is false

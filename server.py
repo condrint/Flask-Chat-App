@@ -6,6 +6,7 @@ import os, sys
 app = Flask(__name__, static_folder='client/build/static')
 app.config['SECRET_KEY'] = 'vnkdjnfjknfl1232#'
 socketio = SocketIO(app)
+loggedOnUsers = []
 
 
 @app.route('/', defaults={'path':'/'})
@@ -26,24 +27,29 @@ def router(path):
     
     
 
-#socketIO code
-def messageReceived(methods=['GET', 'POST']):
-    print('message was received!!!')
 
 
-@socketio.on('my response')
-def handle_my_custom_event(json, methods=['GET', 'POST']):
+@socketio.on('send message')
+def recieved_message(json, methods=['GET', 'POST']):
     print('received my event: ' + str(json))
     print(json, file=sys.stdout)
-    socketio.emit('my response', json, callback=messageReceived)
-
+    socketio.emit('server message', json)
+"""
 @socketio.on('user connected')
-def handle_my_custom_event2(json, methods=['GET', 'POST']):
+def user_connected(json, methods=['GET', 'POST']):
     print('received my event: ' + str(json))
     #socketio.emit('my response', json, callback=messageReceived)
+"""
+@socketio.on('user login')
+def user_login(json, methods=['GET', 'POST']):
+    print('received my event: ' + str(json))
+
+    loggedOnUsers.append(json['alias'])
+    socketio.emit('new user', {'users':loggedOnUsers})
 
 
 #entry point
 if __name__ == '__main__':
     #app.run()
     socketio.run(app)
+    
