@@ -5,8 +5,26 @@ import os, sys
 #initialize library variables
 app = Flask(__name__, static_folder='client/build/static')
 app.config['SECRET_KEY'] = 'vnkdjnfjknfl1232#'
-socketio = SocketIO(app)
-loggedOnUsers = []
+socketio = SocketIO(app, ping_timeout=15, ping_interval=10)
+users = {}
+    
+def removeUser (idOfUser):
+    return users.pop(idOfUser, None)
+
+def addUser (idOfUser, alias):
+    for idOfOtherUsers in users.keys():
+        if alias is users[idOfOtherUsers]:
+            #duplicate aliases are not allowed
+            return None
+    users[idOfUser] = alias
+    return alias #successful
+
+def getUsers():
+    return [users[idOfUser] for idOfUser in users.keys()]
+
+
+
+            
 
 
 @app.route('/', defaults={'path':'/'})
@@ -43,10 +61,20 @@ def user_connected(json, methods=['GET', 'POST']):
 @socketio.on('user login')
 def user_login(json, methods=['GET', 'POST']):
     print('received my event: ' + str(json))
+    print(request.namespace, file=sys.stdout)
+    usersUniqueSocketID = request.sid
+    addUser(usersUniqueSocketID, json['alias'])
+    update_users()
 
-    loggedOnUsers.append(json['alias'])
-    socketio.emit('new user', {'users':loggedOnUsers})
+@socketio.on('disconnect')
+def remove_user(methods=['GET', 'POST']):
+    print('hi', file=sys.stdout)
+    usersUniqueSocketID = request.sid
+    removeUser(usersUniqueSocketID)
+    update_users()
 
+def update_users():
+    socketio.emit('new user', {'users':getUsers()})
 
 #entry point
 if __name__ == '__main__':
