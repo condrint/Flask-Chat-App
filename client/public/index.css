@@ -45,12 +45,12 @@ code {
   display: inline-block;
 }
 
-#chatInput {
-  padding: 5px;
-  font: 24px/36px sans-serif;
-  width: 75%;
-  height: 75%;
-  margin: auto;
+#chatInputWrapper {
+  grid-row: 2;
+}
+
+#input{
+  width: 64%;
 }
 
 li {

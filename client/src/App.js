@@ -48,7 +48,6 @@ class App extends Component {
   updateMessages(message){
     //update the messages in state to include
     //the message passed as a parameter
-    let date = new Date();
     let timeOfMessage = (new Date()).toTimeString().substr(0,5)//date.format("hh:mm:ss tt")
     let currentMessages = this.state.messages;
     currentMessages.push([message.alias, message.message, timeOfMessage]);
@@ -103,17 +102,17 @@ class App extends Component {
       <div className="App">
         { isLoggedIn ? ( //isLoggedIn is true
           <div>
-            <div id="chatInputWrapper">
-              <form id="chatInput" onSubmit={this.handleMessageSubmit}>
-                <input type="text" placeholder="Message" value={this.state.message} onChange={this.handleMessageChange}/>
-                <input type="submit" value="send"/> 
-              </form>
-            </div>
             <div id="messageWrapper">
               <Messages messages={messages}/> 
             </div>
             <div id="userWrapper">
               <Users users={users}/>
+            </div>
+            <div id="chatInputWrapper">
+              <form id="chatInput" onSubmit={this.handleMessageSubmit}>
+                <input id="input" type="text" placeholder="Message" value={this.state.message} onChange={this.handleMessageChange}/>
+                <input id="inputButton" type="submit" value="send"/> 
+              </form>
             </div>
           </div>
           ):( //isLoggedIn is false
