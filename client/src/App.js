@@ -8,8 +8,6 @@ import io from 'socket.io-client/dist/socket.io';
 //and somewhere on heroku for deployment
 var socket = io(`http://${document.domain}:5000`);
 
-
-
 class App extends Component {
   constructor(){
     super()
@@ -33,11 +31,6 @@ class App extends Component {
 
     //instantiate socket events
     socket.on('connect', function() {
-      //emit to socket listening for a connection
-      /*
-      socket.emit( 'user connected', {
-        data: 'User Connected'
-      });*/
     });
 
     //received a new message
@@ -46,27 +39,30 @@ class App extends Component {
     })
 
     socket.on('new user', (users) => {
-      console.log('new user')
-      console.log(users);
       this.updateUsers(users);
     })
   }
 
-
-
+  //functions to update state
+  ///////////////////////////
   updateMessages(message){
     //update the messages in state to include
     //the message passed as a parameter
+    let date = new Date();
+    let timeOfMessage = (new Date()).toTimeString().substr(0,5)//date.format("hh:mm:ss tt")
     let currentMessages = this.state.messages;
-    currentMessages.push([message.alias, message.message]);
+    currentMessages.push([message.alias, message.message, timeOfMessage]);
     this.setState({messages:currentMessages});
   }
 
   updateUsers(users){
     this.setState({users:users.users});
   }
-
+  ///////////////////////////
   
+
+  //functions to handle button submits
+  ///////////////////////////
   handleMessageSubmit(e){
     //extract data from html form and emit
     //to socket code on backend
@@ -91,6 +87,7 @@ class App extends Component {
       loggedIn: true
     })
   }
+  ///////////////////////////
 
   //functions to keep react state consistent
   //with current input
