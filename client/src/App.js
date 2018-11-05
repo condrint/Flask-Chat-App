@@ -96,6 +96,10 @@ class App extends Component {
     //extract data from html form and emit
     //to socket code on backend
     let alias = this.state.alias
+    if (!alias){
+      alert('Alias must not be empty');
+      return;
+    }
     socket.emit( 'user login', {
       alias : alias,
     });
@@ -150,11 +154,16 @@ class App extends Component {
             </div>
           </div>
           ):( //isLoggedIn is false
-            <div id="aliasInputWrapper">
-              <form id="chatInput" onSubmit={this.handleAliasSubmit}>
-                <input type="text" placeholder="Alias" value={this.state.alias} onChange={this.handleAliasChange}/>
-                <input type="submit" value="send"/> 
-              </form>
+            <div>
+              <div id="welcomeText">
+                <h1> Pick an alias to start chatting. </h1>
+              </div>
+              <div id="aliasInputWrapper">
+                <form id="chatInput" onSubmit={this.handleAliasSubmit}>
+                  <input type="text" placeholder="Alias" value={this.state.alias} onChange={this.handleAliasChange}/>
+                  <input type="submit" value="send"/> 
+                </form>
+              </div>
             </div>
           )}
       </div>
