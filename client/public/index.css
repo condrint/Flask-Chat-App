@@ -11,7 +11,6 @@ code {
     monospace;
 }
 
-
 .App {
   display: grid;
   grid-gap: 3px;
@@ -46,6 +45,10 @@ code {
 }
 
 #chatInputWrapper {
+  grid-row: 2;
+}
+
+#emoteButton {
   grid-row: 2;
 }
 

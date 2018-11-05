@@ -42,17 +42,17 @@ def router(path):
     elif path and os.path.exists('client/build/' + path):
         print('returned ' + str(path), file=sys.stdout)
         return send_from_directory('client/build/', path)
-    
+
+@socketio.on('send emote')
+def recieved_emote(json, methods=['GET', 'POST']):
+    socketio.emit('server message', json)
+
 @socketio.on('send message')
 def recieved_message(json, methods=['GET', 'POST']):
-    print('received my event: ' + str(json))
-    print(json, file=sys.stdout)
     socketio.emit('server message', json)
 
 @socketio.on('user login')
 def user_login(json, methods=['GET', 'POST']):
-    print('received my event: ' + str(json))
-    print(request.namespace, file=sys.stdout)
     usersUniqueSocketID = request.sid
     addUser(usersUniqueSocketID, json['alias'])
     update_users()

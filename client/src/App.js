@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
 import { Messages } from './Messages';
 import { Users } from './Users';
+import { Emotes } from './Emotes';
 import io from 'socket.io-client/dist/socket.io';
 
 //document domain corresponds to the url in the browser
 //in our case it may be localhost when developing
 //and somewhere on heroku for deployment
 var socket = io(`http://${document.domain}:5000`);
+const emotes = ['◕‿◕', 'ლ(´ڡ`ლ)', '(ಥ﹏ಥ)', '(づ￣ ³￣)づ', '¯\_(ツ)_/¯','╭∩╮(-_-)╭∩╮'];
+export {emotes};
 
 class App extends Component {
   constructor(){
@@ -19,6 +22,7 @@ class App extends Component {
       message: '',
       isLoggedIn: false,
       users: [],
+      emotesVisible: false,
     }
 
     //bind functions to this object
@@ -28,6 +32,8 @@ class App extends Component {
     this.handleMessageChange = this.handleMessageChange.bind(this);
     this.updateMessages = this.updateMessages.bind(this);
     this.updateUsers = this.updateUsers.bind(this);
+    this.handleEmoteSubmit = this.handleEmoteSubmit.bind(this);
+    this.showEmotes = this.showEmotes.bind(this);
 
     //instantiate socket events
     socket.on('connect', function() {
@@ -45,11 +51,22 @@ class App extends Component {
 
   //functions to update state
   ///////////////////////////
+  showEmotes(){
+    let toggle = !(this.state.emotesVisible);
+    this.setState({emotesVisible:toggle});
+  }
+
   updateMessages(message){
     //update the messages in state to include
     //the message passed as a parameter
     let timeOfMessage = (new Date()).toTimeString().substr(0,5)//date.format("hh:mm:ss tt")
     let currentMessages = this.state.messages;
+
+    //check if message is an emote 
+    if ('emote' in message){
+      message.message = emotes[message.emote] 
+    }
+
     currentMessages.push([message.alias, message.message, timeOfMessage]);
     this.setState({messages:currentMessages});
   }
@@ -68,9 +85,9 @@ class App extends Component {
     e.preventDefault()
     let alias = this.state.alias;
     let message = this.state.message;
-    socket.emit( 'send message', {
-      alias : alias.toString(),
-      message : message.toString()
+    socket.emit('send message', {
+      alias: alias,
+      message: message
     });
     this.setState({ message: '' }); //clear message for user after sending
   }
@@ -86,6 +103,14 @@ class App extends Component {
       loggedIn: true
     })
   }
+
+  handleEmoteSubmit(emoteIndex){
+    let alias = this.state.alias;
+    socket.emit('send emote', {
+      alias: alias,
+      emote: emoteIndex
+    });
+  }
   ///////////////////////////
 
   //functions to keep react state consistent
@@ -98,6 +123,7 @@ class App extends Component {
     let isLoggedIn = this.state.loggedIn;
     let messages = this.state.messages;
     let users = this.state.users;
+
     return (
       <div className="App">
         { isLoggedIn ? ( //isLoggedIn is true
@@ -114,16 +140,23 @@ class App extends Component {
                 <input id="inputButton" type="submit" value="send"/> 
               </form>
             </div>
+            <div id="emoteWrapper">
+              <div id="emoteButton">
+                <button id="showEmoteButton" onClick={this.showEmotes}>Emotes</button>
+              </div>
+              <div>
+                {this.state.emotesVisible && <Emotes sendEmote={this.handleEmoteSubmit}/>} 
+              </div>
+            </div>
           </div>
           ):( //isLoggedIn is false
             <div id="aliasInputWrapper">
-            <form id="chatInput" onSubmit={this.handleAliasSubmit}>
+              <form id="chatInput" onSubmit={this.handleAliasSubmit}>
                 <input type="text" placeholder="Alias" value={this.state.alias} onChange={this.handleAliasChange}/>
                 <input type="submit" value="send"/> 
               </form>
             </div>
           )}
-        
       </div>
       
     );
