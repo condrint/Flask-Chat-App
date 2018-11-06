@@ -8,7 +8,7 @@ import io from 'socket.io-client/dist/socket.io';
 //in our case it may be localhost when developing
 //and somewhere on heroku for deployment
 var socket = io(`http://${document.domain}:5000`);
-const emotes = ['◕‿◕', 'ლ(´ڡ`ლ)', '(ಥ﹏ಥ)', '(づ￣ ³￣)づ', '¯\_(ツ)_/¯','╭∩╮(-_-)╭∩╮'];
+const emotes = ['◕‿◕', 'ლ(´ڡ`ლ)', '(ಥ﹏ಥ)', '(づ￣ ³￣)づ', '¯\_(ツ)_/¯','╭∩╮(-_-)╭∩╮', '(づ｡◕‿‿◕｡)づ', 'ఠ_ఠ', '◔̯◔', 'ಠ益ಠ', '( ‘-’)人(ﾟ_ﾟ )'];
 export {emotes};
 
 class App extends Component {
@@ -145,7 +145,7 @@ class App extends Component {
               <form id="chatInput" onSubmit={this.handleMessageSubmit}>
                 <input id="input" type="text" placeholder="Message" value={this.state.message} onChange={this.handleMessageChange}/>
                 <input id="inputButton" type="submit" value="send"/> 
-                <button id="showEmoteButton" onClick={this.showEmotes}>Emotes</button>
+                <button id="showEmoteButton" type="button" onClick={this.showEmotes}>Emotes</button>
               </form>
             </div>
             <div id="emoteWrapper">
