@@ -8,7 +8,7 @@ class Emotes extends Component{
     
     render(){
         return(
-            <div>
+            <div id="emoteButtons">
             { emotes && 
                     emotes.map((item, index) => 
                         <button onClick={() => this.props.sendEmote(index)} key={index}>{item}</button>

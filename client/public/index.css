@@ -20,7 +20,6 @@ code {
 #messageWrapper {
   grid-row: 1;
   border: 3px ridge black;
-  padding: 5px;
   font: 24px/36px sans-serif;
   width: 70%;
   height: 600px;
@@ -34,7 +33,6 @@ code {
 #userWrapper {
   grid-row: 1;
   border: 3px ridge black;
-  padding: 5px;
   font: 24px/36px sans-serif;
   width: 25%;
   height: 600px;
@@ -45,28 +43,25 @@ code {
 }
 
 #chatInputWrapper {
+  grid-column: 1;
   grid-row: 2;
 }
 
-#emoteButton {
+#showEmoteButton {
+  grid-column: 2;
   grid-row: 2;
 }
 
 #input{
-  width: 64%;
+  width: 66%;
 }
 
 li {
   list-style-type: none;
 }
 
-input {
-  margin: 5px;
-}
-  
-
 button {
-  margin: auto;
+  margin: 10px;
   padding: 1rem;
   text-transform: uppercase;
   color: #fafafa;
@@ -77,8 +72,64 @@ button {
   transition: .3s all ease;
   letter-spacing: .1rem;
   font-size: .85rem;
-  position: relative;
-  top: 0;
-  right: 0;
-  padding-left: 2.5rem;
+}
+
+input:nth-child(1){
+  margin: 10px;
+  padding: 1rem;
+  font-size: .8rem;
+  border: none;
+  border-radius: 2px;
+  box-shadow: 1px 1px 10px rgba(50,50,50,.3);
+}
+
+input:nth-child(2){
+  margin: 10px;
+  padding: 1rem;
+  text-transform: uppercase;
+  color: #fafafa;
+  background-color:#00d166;
+  border: none;
+  border-radius: 3px;
+  box-shadow: 1px 1px 10px rgba(50,50,50,.4);
+  transition: .3s all ease;
+  letter-spacing: .1rem;
+  font-size: .85rem;
+}
+
+#emoteButtons {
+  background-color: lightgrey;
+  border-radius: 2px;
+  animation-duration: .5s;
+  animation-name: slidein;
+}
+
+@keyframes slidein {
+	0% {
+		transform: translateY(100%);
+	}
+	50%{
+		transform: translateY(-4%);
+	}
+	65%{
+		transform: translateY(2%);
+	}
+	80%{
+		transform: translateY(-2%);
+	}
+	95%{
+		transform: translateY(1%);
+	}			
+	100% {
+		transform: translateY(0%);
+	}		
+}
+
+#aliasScreen {
+  margin: auto;
+}
+
+#aliasInputWrapper {
+  padding-top: 30px;
+  margin-left: 60px;
 }

@@ -132,6 +132,9 @@ class App extends Component {
       <div className="App">
         { isLoggedIn ? ( //isLoggedIn is true
           <div>
+            <div id="banner">
+                 <h1> Start chatting! </h1>
+            </div>
             <div id="messageWrapper">
               <Messages messages={messages}/> 
             </div>
@@ -142,19 +145,17 @@ class App extends Component {
               <form id="chatInput" onSubmit={this.handleMessageSubmit}>
                 <input id="input" type="text" placeholder="Message" value={this.state.message} onChange={this.handleMessageChange}/>
                 <input id="inputButton" type="submit" value="send"/> 
+                <button id="showEmoteButton" onClick={this.showEmotes}>Emotes</button>
               </form>
             </div>
             <div id="emoteWrapper">
-              <div id="emoteButton">
-                <button id="showEmoteButton" onClick={this.showEmotes}>Emotes</button>
-              </div>
               <div>
                 {this.state.emotesVisible && <Emotes sendEmote={this.handleEmoteSubmit}/>} 
               </div>
             </div>
           </div>
           ):( //isLoggedIn is false
-            <div>
+            <div id="aliasScreen">
               <div id="welcomeText">
                 <h1> Pick an alias to start chatting. </h1>
               </div>
