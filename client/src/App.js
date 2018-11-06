@@ -23,6 +23,7 @@ class App extends Component {
       isLoggedIn: false,
       users: [],
       emotesVisible: false,
+      kicked: false,
     }
 
     //bind functions to this object
@@ -42,11 +43,15 @@ class App extends Component {
     //received a new message
     socket.on('server message', (msg) => {
       this.updateMessages(msg);
-    })
+    });
 
     socket.on('new user', (users) => {
       this.updateUsers(users);
-    })
+    });
+
+    socket.on('admin kick', () => {
+      this.setState({kicked: true})
+    });
   }
 
   //functions to update state
@@ -85,6 +90,10 @@ class App extends Component {
     e.preventDefault()
     let alias = this.state.alias;
     let message = this.state.message;
+    if (!message){
+      alert('Message must not be empty');
+      return;
+    }
     socket.emit('send message', {
       alias: alias,
       message: message
@@ -125,48 +134,53 @@ class App extends Component {
 
   render() {
     let isLoggedIn = this.state.loggedIn;
+    let notKicked = !this.state.kicked;
     let messages = this.state.messages;
     let users = this.state.users;
 
     return (
       <div className="App">
-        { isLoggedIn ? ( //isLoggedIn is true
-          <div>
-            <div id="banner">
-                 <h1> Start chatting! </h1>
-            </div>
-            <div id="messageWrapper">
-              <Messages messages={messages}/> 
-            </div>
-            <div id="userWrapper">
-              <Users users={users}/>
-            </div>
-            <div id="chatInputWrapper">
-              <form id="chatInput" onSubmit={this.handleMessageSubmit}>
-                <input id="input" type="text" placeholder="Message" value={this.state.message} onChange={this.handleMessageChange}/>
-                <input id="inputButton" type="submit" value="send"/> 
-                <button id="showEmoteButton" type="button" onClick={this.showEmotes}>Emotes</button>
-              </form>
-            </div>
-            <div id="emoteWrapper">
-              <div>
-                {this.state.emotesVisible && <Emotes sendEmote={this.handleEmoteSubmit}/>} 
+        { notKicked ? (
+           isLoggedIn ? ( //isLoggedIn is true
+            <div>
+              <div id="banner">
+                   <h1> Start chatting! </h1>
               </div>
-            </div>
-          </div>
-          ):( //isLoggedIn is false
-            <div id="aliasScreen">
-              <div id="welcomeText">
-                <h1> Pick an alias to start chatting. </h1>
+              <div id="messageWrapper">
+                <Messages messages={messages}/> 
               </div>
-              <div id="aliasInputWrapper">
-                <form id="chatInput" onSubmit={this.handleAliasSubmit}>
-                  <input type="text" placeholder="Alias" value={this.state.alias} onChange={this.handleAliasChange}/>
-                  <input type="submit" value="send"/> 
+              <div id="userWrapper">
+                <Users users={users}/>
+              </div>
+              <div id="chatInputWrapper">
+                <form id="chatInput" onSubmit={this.handleMessageSubmit}>
+                  <input id="input" type="text" placeholder="Message" value={this.state.message} onChange={this.handleMessageChange}/>
+                  <input id="inputButton" type="submit" value="send"/> 
+                  <button id="showEmoteButton" type="button" onClick={this.showEmotes}>Emotes</button>
                 </form>
               </div>
+              <div id="emoteWrapper">
+                <div>
+                  {this.state.emotesVisible && <Emotes sendEmote={this.handleEmoteSubmit}/>} 
+                </div>
+              </div>
             </div>
-          )}
+            ):( //isLoggedIn is false
+              <div id="aliasScreen">
+                <div id="welcomeText">
+                  <h1> Pick an alias to start chatting. </h1>
+                </div>
+                <div id="aliasInputWrapper">
+                  <form id="chatInput" onSubmit={this.handleAliasSubmit}>
+                    <input type="text" placeholder="Alias" value={this.state.alias} onChange={this.handleAliasChange}/>
+                    <input type="submit" value="send"/> 
+                  </form>
+                </div>
+              </div>
+          )
+        ) : (
+          <div><h1>Kicked</h1></div>
+        )}
       </div>
       
     );
