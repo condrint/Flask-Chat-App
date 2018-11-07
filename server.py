@@ -63,10 +63,12 @@ def recieved_message(json, methods=['GET', 'POST']):
         socketio.emit('admin kick')
         kickUsers()
         return
+
     if json['message'] == '4549admin_mute':
         print(getAdminMute(), file=sys.stdout)
         setAdminMute(not getAdminMute()) #toggle
         return
+        
     if not getAdminMute():
         socketio.emit('server message', json) 
 
@@ -84,7 +86,7 @@ def remove_user(methods=['GET', 'POST']):
 
 #entry point
 if __name__ == '__main__':
-    #app.run()
+    app.run()
     
-    socketio.run(app)
+    #socketio.run(app)
     
