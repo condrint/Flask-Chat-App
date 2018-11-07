@@ -86,7 +86,7 @@ def remove_user(methods=['GET', 'POST']):
 
 #entry point
 if __name__ == '__main__':
-    app.run()
+    #app.run()
     
-    #socketio.run(app)
+    socketio.run(app)
     
