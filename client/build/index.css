@@ -1,0 +1,135 @@
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+.App {
+  display: grid;
+  grid-gap: 3px;
+}
+
+
+#messageWrapper {
+  grid-row: 1;
+  border: 3px ridge black;
+  font: 24px/36px sans-serif;
+  width: 70%;
+  height: 600px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  margin: auto;
+  display: inline-block;
+  
+}
+
+#userWrapper {
+  grid-row: 1;
+  border: 3px ridge black;
+  font: 24px/36px sans-serif;
+  width: 25%;
+  height: 600px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  margin: auto;
+  display: inline-block;
+}
+
+#chatInputWrapper {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+#showEmoteButton {
+  grid-column: 2;
+  grid-row: 2;
+}
+
+#input{
+  width: 66%;
+}
+
+li {
+  list-style-type: none;
+}
+
+button {
+  margin: 10px;
+  padding: 1rem;
+  text-transform: uppercase;
+  color: #fafafa;
+  background-color:#00d166;
+  border: none;
+  border-radius: 3px;
+  box-shadow: 1px 1px 10px rgba(50,50,50,.4);
+  transition: .3s all ease;
+  letter-spacing: .1rem;
+  font-size: .85rem;
+}
+
+input:nth-child(1){
+  margin: 10px;
+  padding: 1rem;
+  font-size: .8rem;
+  border: none;
+  border-radius: 2px;
+  box-shadow: 1px 1px 10px rgba(50,50,50,.3);
+}
+
+input:nth-child(2){
+  margin: 10px;
+  padding: 1rem;
+  text-transform: uppercase;
+  color: #fafafa;
+  background-color:#00d166;
+  border: none;
+  border-radius: 3px;
+  box-shadow: 1px 1px 10px rgba(50,50,50,.4);
+  transition: .3s all ease;
+  letter-spacing: .1rem;
+  font-size: .85rem;
+}
+
+#emoteButtons {
+  background-color: lightgrey;
+  border-radius: 2px;
+  animation-duration: .5s;
+  animation-name: slidein;
+}
+
+@keyframes slidein {
+	0% {
+		transform: translateY(100%);
+	}
+	50%{
+		transform: translateY(-4%);
+	}
+	65%{
+		transform: translateY(2%);
+	}
+	80%{
+		transform: translateY(-2%);
+	}
+	95%{
+		transform: translateY(1%);
+	}			
+	100% {
+		transform: translateY(0%);
+	}		
+}
+
+#aliasScreen {
+  margin: auto;
+}
+
+#aliasInputWrapper {
+  padding-top: 30px;
+  margin-left: 60px;
+}
