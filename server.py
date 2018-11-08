@@ -6,7 +6,7 @@ from flask_cors import CORS
 #initialize library variables
 app = Flask(__name__, static_folder='client/build/static')
 app.config['SECRET_KEY'] = 'vnkdjnfjknfl1232#'
-socketio = SocketIO(app, ping_timeout=10, ping_interval=5)
+socketio = SocketIO(app)
 
 
 
