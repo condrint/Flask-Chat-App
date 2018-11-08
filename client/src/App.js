@@ -38,6 +38,7 @@ class App extends Component {
 
     //instantiate socket events
     socket.on('connect', function() {
+      console.log(socket)
     });
 
     //received a new message
