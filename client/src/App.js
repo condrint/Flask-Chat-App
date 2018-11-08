@@ -7,7 +7,7 @@ import io from 'socket.io-client/dist/socket.io';
 //document domain corresponds to the url in the browser
 //in our case it may be localhost when developing
 //and somewhere on heroku for deployment
-var socket = io(`https://chat4318.herokuapp.com:5000`);
+var socket = io(`http://${document.domain}:5000`);
 const emotes = ['◕‿◕', 'ლ(´ڡ`ლ)', '(ಥ﹏ಥ)', '(づ￣ ³￣)づ', '¯\_(ツ)_/¯','╭∩╮(-_-)╭∩╮', '(づ｡◕‿‿◕｡)づ', 'ఠ_ఠ', '◔̯◔', 'ಠ益ಠ', '( ‘-’)人(ﾟ_ﾟ )'];
 export {emotes};
 
