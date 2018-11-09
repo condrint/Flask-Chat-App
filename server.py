@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, send_from_directory, make_response, jsonify
 from flask_socketio import SocketIO
 import os, sys
-from flask_cors import CORS
+#from flask_cors import CORS
 
 #initialize library variables
 app = Flask(__name__, static_folder='client/build/static')
@@ -90,7 +90,7 @@ def remove_user(methods=['GET', 'POST']):
 #entry point
 if __name__ == '__main__':
     
-    cors = CORS(app)
+    #cors = CORS(app)
     #app.run()
-    socketio.run(app, debug=True)
+    socketio.run(app)
     
