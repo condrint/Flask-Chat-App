@@ -6,7 +6,7 @@ from flask_cors import CORS
 #initialize library variables
 app = Flask(__name__, static_folder='client/build/static')
 app.config['SECRET_KEY'] = 'vnkdjnfjknfl1232#'
-socketio = SocketIO(app, async_mode="eventlet")
+socketio = SocketIO(app, async_mode="threading")
 
 
 
@@ -91,6 +91,6 @@ def remove_user(methods=['GET', 'POST']):
 if __name__ == '__main__':
     
     cors = CORS(app)
-    app.run()
-    #socketio.run(app, debug=True)
+    #app.run()
+    socketio.run(app, debug=True)
     
