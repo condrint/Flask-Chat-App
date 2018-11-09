@@ -75,15 +75,17 @@ def recieved_message(json, methods=['GET', 'POST']):
 
 @socketio.on('user login')
 def user_login(json, methods=['GET', 'POST']):
+    print('user logged on', file = sys.stdout)
+    print(json, file=sys.stdout)
     usersUniqueSocketID = request.sid
     addUser(usersUniqueSocketID, json['alias'])
-    #update_users()
+    update_users()
 
 @socketio.on('disconnect')
 def remove_user(methods=['GET', 'POST']):
     usersUniqueSocketID = request.sid
     removeUser(usersUniqueSocketID)
-    #update_users()
+    update_users()
 
 #entry point
 if __name__ == '__main__':
