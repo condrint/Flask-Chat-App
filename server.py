@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, send_from_directory, make_response, jsonify
 from flask_socketio import SocketIO
 import os, sys
-#from flask_cors import CORS
+
 
 #initialize library variables
 app = Flask(__name__, static_folder='client/build/static')
@@ -32,12 +32,15 @@ def getUsers():
 def update_users():
     socketio.emit('new user', {'users':getUsers()})
 
-admin_mute = False
-def getAdminMute():
-    return admin_mute
+class Mute:
+    def __init__(self):
+        self.admin_mute = False
 
-def setAdminMute(newValue):
-    admin_mute = newValue
+    def getAdminMute(self):
+        return self.admin_mute
+
+    def setAdminMute(self, newValue):
+        self.admin_mute = newValue
 
 
 @app.route('/', defaults={'path':'/'})
@@ -66,11 +69,10 @@ def recieved_message(json, methods=['GET', 'POST']):
         return
 
     if json['message'] == '4549admin_mute':
-        print(getAdminMute(), file=sys.stdout)
-        setAdminMute(not getAdminMute()) #toggle
+        mute.setAdminMute(not mute.getAdminMute()) #toggle
         return
         
-    if not getAdminMute():
+    if not mute.getAdminMute():
         socketio.emit('server message', json) 
 
 @socketio.on('user login')
@@ -89,8 +91,6 @@ def remove_user(methods=['GET', 'POST']):
 
 #entry point
 if __name__ == '__main__':
-    
-    #cors = CORS(app)
-    #app.run()
+    mute = Mute()
     socketio.run(app)
     

@@ -145,7 +145,7 @@ class App extends Component {
            isLoggedIn ? ( //isLoggedIn is true
             <div>
               <div id="banner">
-                   <h1> Start chatting! </h1>
+                   <h1> chat4318 </h1>
               </div>
               <div id="messageWrapper">
                 <Messages messages={messages}/> 
