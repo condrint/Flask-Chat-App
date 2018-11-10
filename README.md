@@ -10,3 +10,4 @@ pip install flask_socketio
 python server.py
 ```
 
+requires pip and npm :)
