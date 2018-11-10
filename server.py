@@ -5,10 +5,8 @@ import os, sys
 
 #initialize library variables
 app = Flask(__name__, static_folder='client/build/static')
-app.config['SECRET_KEY'] = 'vnkdjnfjknfl1232#'
-socketio = SocketIO(app, async_mode="threading")
-
-
+app.config['SECRET_KEY'] = 'aspdifhgopsdfuigh'
+socketio = SocketIO(app)
 
 #functions to manage user list
 users = {}    
@@ -77,8 +75,6 @@ def recieved_message(json, methods=['GET', 'POST']):
 
 @socketio.on('user login')
 def user_login(json, methods=['GET', 'POST']):
-    print('user logged on', file = sys.stdout)
-    print(json, file=sys.stdout)
     usersUniqueSocketID = request.sid
     addUser(usersUniqueSocketID, json['alias'])
     update_users()
