@@ -4,6 +4,7 @@
 ```
 cd client
 npm install
+npm run build
 cd ..
 pip install flask
 pip install flask_socketio
